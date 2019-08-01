@@ -343,6 +343,20 @@ stationarity_check(data_minus_rolmean)
 ### Based on the visuals and on the Dickey-Fuller test, what do you conclude?
 
 
+
+```python
+# Your conclusion here
+```
+
+
+```python
+# __SOLUTION__
+"""
+The time series are not stationary, as the p-value is still substantial 
+(0.15 instead of smaller than the typical threshold value 0.05).
+"""
+```
+
 ## Subtracting the weighted rolling mean
 
 Repeat all the above for the *weighter* rolling mean. Start from the log-transformed data again. Compare the Dickey-Fuller Test results. What do you conclude?
@@ -371,7 +385,7 @@ plt.show(block=False)
 ```
 
 
-![png](index_files/index_32_0.png)
+![png](index_files/index_34_0.png)
 
 
 
@@ -394,7 +408,7 @@ plt.show(block=False)
 ```
 
 
-![png](index_files/index_34_0.png)
+![png](index_files/index_36_0.png)
 
 
 
@@ -409,7 +423,7 @@ stationarity_check(data_minus_exp_rolmean)
 ```
 
 
-![png](index_files/index_36_0.png)
+![png](index_files/index_38_0.png)
 
 
     Results of Dickey-Fuller Test:
@@ -425,6 +439,20 @@ stationarity_check(data_minus_exp_rolmean)
 
 ### Based on the visuals and on the Dickey-Fuller test, what do you conclude?
 
+
+
+```python
+# Your conclusion here
+```
+
+
+```python
+# __SOLUTION__
+"""
+The p-value of the Dickey-Fuller test <0.05, so this series seems to be stationary according to this test! 
+Do note that there is still strong seasonality.
+"""
+```
 
 ## Differencing
 
@@ -555,7 +583,7 @@ plt.show(block=False)
 ```
 
 
-![png](index_files/index_43_0.png)
+![png](index_files/index_47_0.png)
 
 
 
@@ -581,7 +609,7 @@ stationarity_check(data_diff)
 ```
 
 
-![png](index_files/index_47_0.png)
+![png](index_files/index_51_0.png)
 
 
     Results of Dickey-Fuller Test:
@@ -596,6 +624,21 @@ stationarity_check(data_diff)
 
 
 ### Your conclusion
+
+
+```python
+# Your conclusion here
+```
+
+
+```python
+# __SOLUTION__
+"""
+Even though the rolling mean and rolling average lines do seem to be fluctuating, the movements seem to be completely random, 
+and the same conclusion holds for the original time series. 
+Your time series is now ready for modeling!
+"""
+```
 
 ## Summary 
 
