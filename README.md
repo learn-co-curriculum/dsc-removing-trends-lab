@@ -280,7 +280,14 @@ stationarity_check(data_minus_rolmean)
 
 ### Based on the visuals and on the Dickey-Fuller test, what do you conclude?
 
-The time series are not stationary, as the p-value is still substantial (0.15 instead of smaller than the typical threshold value 0.05). 
+
+
+```python
+"""
+The time series are not stationary, as the p-value is still substantial 
+(0.15 instead of smaller than the typical threshold value 0.05).
+"""
+```
 
 ## Subtracting the weighted rolling mean
 
@@ -301,7 +308,7 @@ plt.show(block=False)
 ```
 
 
-![png](index_files/index_22_0.png)
+![png](index_files/index_23_0.png)
 
 
 
@@ -318,7 +325,7 @@ plt.show(block=False)
 ```
 
 
-![png](index_files/index_23_0.png)
+![png](index_files/index_24_0.png)
 
 
 
@@ -327,7 +334,7 @@ stationarity_check(data_minus_exp_rolmean)
 ```
 
 
-![png](index_files/index_24_0.png)
+![png](index_files/index_25_0.png)
 
 
     Results of Dickey-Fuller Test:
@@ -343,7 +350,14 @@ stationarity_check(data_minus_exp_rolmean)
 
 ### Based on the visuals and on the Dickey-Fuller test, what do you conclude?
 
-The p-value of the Dickey-Fuller test <0.05, so this series seems to be stationary according to this test! Do note that there is still strong seasonality.
+
+
+```python
+"""
+The p-value of the Dickey-Fuller test <0.05, so this series seems to be stationary according to this test! 
+Do note that there is still strong seasonality.
+"""
+```
 
 ## Differencing
 
@@ -462,7 +476,7 @@ plt.show(block=False)
 ```
 
 
-![png](index_files/index_29_0.png)
+![png](index_files/index_31_0.png)
 
 
 
@@ -476,7 +490,7 @@ stationarity_check(data_diff)
 ```
 
 
-![png](index_files/index_31_0.png)
+![png](index_files/index_33_0.png)
 
 
     Results of Dickey-Fuller Test:
@@ -492,7 +506,14 @@ stationarity_check(data_diff)
 
 ### Your conclusion
 
-Even though the rolling mean and rolling average lines do seem to be fluctuating, the movements seem to be completely random, and the same conclusion holds for the original time series. Your time series is now ready for modeling!
+
+```python
+"""
+Even though the rolling mean and rolling average lines do seem to be fluctuating, the movements seem to be completely random, 
+and the same conclusion holds for the original time series. 
+Your time series is now ready for modeling!
+"""
+```
 
 ## Summary 
 
