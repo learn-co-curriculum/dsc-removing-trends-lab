@@ -93,6 +93,11 @@ Finally, use your function `check_stationarity` to see if this series is conside
 ### Based on the visuals and on the Dickey-Fuller test, what do you conclude?
 
 
+
+```python
+# Your conclusion here
+```
+
 ## Subtracting the weighted rolling mean
 
 Repeat all the above for the *weighter* rolling mean. Start from the log-transformed data again. Compare the Dickey-Fuller Test results. What do you conclude?
@@ -117,6 +122,11 @@ Repeat all the above for the *weighter* rolling mean. Start from the log-transfo
 
 ### Based on the visuals and on the Dickey-Fuller test, what do you conclude?
 
+
+
+```python
+# Your conclusion here
+```
 
 ## Differencing
 
@@ -145,6 +155,11 @@ After you differenced the series, run the `stationarity check` again.
 ```
 
 ### Your conclusion
+
+
+```python
+# Your conclusion here
+```
 
 ## Summary 
 
