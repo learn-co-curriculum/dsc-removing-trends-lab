@@ -7,64 +7,170 @@ In this lab, you'll practice your detrending skills!
 
 ## Objectives
 
-You will be able to:
-* Learn how to remove trends and seasonality
-* Use a log transformation to minimize non-stationarity
-* Use rolling means to reduce non-stationarity
-* Use differencing to reduce non-stationarity
+In this lab you will: 
 
-## Detrending the Airpassenger data
+- Use a log transformation to minimize non-stationarity 
+- Use rolling means to reduce non-stationarity 
+- Use differencing to reduce non-stationarity 
+- Use rolling statistics as a check for stationarity 
+- Create visualizations of transformed time series as a visual aid to determine if stationarity has been achieved 
+- Use the Dickey-Fuller test and conclude whether or not a dataset is exhibiting stationarity 
+
+
+## Detrending the Air passenger data 
+
+In this lab you will work with the air passenger dataset available in `'passengers.csv'`. First, run the following cell to import the necessary libraries. 
 
 
 ```python
 # Import necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pylab as plt
+%matplotlib inline
+```
 
-# Import passengers.csv and set it as a time-series object. Plot the TS
+
+```python
+# __SOLUTION__ 
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pylab as plt
+%matplotlib inline
+```
+
+- Import the `'passengers.csv'` dataset 
+- Change the data type of the `'Month'` column to a proper date format 
+- Set the `'Month'` column as the index of the DataFrame 
+- Print the first five rows of the dataset 
+
+
+```python
+# Import 'passengers.csv' dataset
+data = None
+
+# Change the data type of the 'Month' column
+data['Month'] = None
+
+# Set the 'Month' column as the index
+ts = None
+
+# Print the first five rows
 
 ```
 
 
 ```python
 # __SOLUTION__ 
-#Import necessary libraries
-import pandas as pd
-from pandas import Series
-import numpy as np
-
-import matplotlib.pylab as plt
-%matplotlib inline
-
-# Import passengers.csv and set it as a time-series object. Plot the TS
+# Import 'passengers.csv' dataset
 data = pd.read_csv('passengers.csv')
+
+# Change the data type of the 'Month' column
+data['Month'] = pd.to_datetime(data['Month'])
+
+# Set the 'Month' column as the index
 ts = data.set_index('Month')
-ts.index = pd.to_datetime(ts.index)
-ts.plot(figsize=(12,6), color="blue");
+
+# Print the first five rows
+ts.head()
 ```
 
 
-![png](index_files/index_3_0.png)
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>#Passengers</th>
+    </tr>
+    <tr>
+      <th>Month</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1949-01-01</th>
+      <td>112</td>
+    </tr>
+    <tr>
+      <th>1949-02-01</th>
+      <td>118</td>
+    </tr>
+    <tr>
+      <th>1949-03-01</th>
+      <td>132</td>
+    </tr>
+    <tr>
+      <th>1949-04-01</th>
+      <td>129</td>
+    </tr>
+    <tr>
+      <th>1949-05-01</th>
+      <td>121</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Plot this time series. 
+
+
+```python
+# Plot the time series
+
+```
+
+
+```python
+# __SOLUTION__ 
+# Plot the time series
+ts.plot(figsize=(12,6), color='blue');
+```
+
+
+![png](index_files/index_9_0.png)
 
 
 ## Create a stationarity check
 
-At this stage, we can use the code from previous labs to create a function `stationarity_check(ts)` that takes in a time series object and performs stationarity checks including rolling statistics and the Dickey Fuller test. 
+Your next task is to use the code from previous labs to create a function `stationarity_check()` that takes in a time series and performs stationarity checks including rolling statistics and the Dickey-Fuller test. 
 
-We want the output of the function to:
-- Plot the original time series along with the rolling mean and rolling standard deviation in one plot
-- Output the results of the Dickey-Fuller test
+We want the output of the function to: 
+
+- Plot the original time series along with the rolling mean and rolling standard deviation (use a window of 8) in one plot 
+- Output the results of the Dickey-Fuller test 
 
 
 ```python
-# Create a function to check for the stationarity of a given timeseries using rolling stats and DF test
-# Collect and package the code from previous lab
+# Create a function to check for the stationarity of a given time series using rolling stats and DF test
+# Collect and package the code from previous labs
 
 ```
 
 
 ```python
 # __SOLUTION__ 
-# Create a function to check for the stationarity of a given timeseries using rolling stats and DF test
-# Collect and package the code from previous lab
+# Create a function to check for the stationarity of a given time series using rolling stats and DF test
+# Collect and package the code from previous labs
 
 def stationarity_check(TS):
     
@@ -72,33 +178,34 @@ def stationarity_check(TS):
     from statsmodels.tsa.stattools import adfuller
     
     # Calculate rolling statistics
-    rolmean = TS.rolling(window = 8, center = False).mean()
-    rolstd = TS.rolling(window = 8, center = False).std()
+    roll_mean = TS.rolling(window=8, center=False).mean()
+    roll_std = TS.rolling(window=8, center=False).std()
     
     # Perform the Dickey Fuller Test
-    dftest = adfuller(TS['#Passengers']) # change the passengers column as required 
+    dftest = adfuller(TS['#Passengers'])
     
-    #Plot rolling statistics:
+    # Plot rolling statistics:
     fig = plt.figure(figsize=(12,6))
-    orig = plt.plot(TS, color='blue',label='Original')
-    mean = plt.plot(rolmean, color='red', label='Rolling Mean')
-    std = plt.plot(rolstd, color='black', label = 'Rolling Std')
+    plt.plot(TS, color='blue',label='Original')
+    plt.plot(roll_mean, color='red', label='Rolling Mean')
+    plt.plot(roll_std, color='black', label = 'Rolling Std')
     plt.legend(loc='best')
     plt.title('Rolling Mean & Standard Deviation')
     plt.show(block=False)
     
     # Print Dickey-Fuller test results
-    print ('Results of Dickey-Fuller Test:')
+    print('Results of Dickey-Fuller Test: \n')
 
-    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic', 'p-value', 
+                                             '#Lags Used', 'Number of Observations Used'])
     for key,value in dftest[4].items():
         dfoutput['Critical Value (%s)'%key] = value
-    print (dfoutput)
+    print(dfoutput)
     
     return None
 ```
 
-Use your newly created function on the airpassenger data set.
+Use your newly created function on the `ts` timeseries. 
 
 
 ```python
@@ -112,10 +219,11 @@ stationarity_check(ts)
 ```
 
 
-![png](index_files/index_9_0.png)
+![png](index_files/index_15_0.png)
 
 
-    Results of Dickey-Fuller Test:
+    Results of Dickey-Fuller Test: 
+    
     Test Statistic                   0.815369
     p-value                          0.991880
     #Lags Used                      13.000000
@@ -126,43 +234,51 @@ stationarity_check(ts)
     dtype: float64
 
 
-## Perform a log() and sqrt() transform
+## Perform a log and square root transform
+
+Plot a log transform of the original time series (`ts`). 
 
 
 ```python
-# Log transform timeseries and compare with original to check the effect
+# Plot a log transform
 
 ```
 
 
 ```python
 # __SOLUTION__ 
-# Log transform timeseries and compare with original to check the effect
+# Plot a log transform
 ts_log = np.log(ts)
-ts_sqrt= np.sqrt(ts)
-fig = plt.figure(figsize=(12,6))
-plt.plot(ts,  color='blue');
-plt.show()
 fig = plt.figure(figsize=(12,6))
 plt.plot(ts_log, color='blue');
-plt.show()
+```
+
+
+![png](index_files/index_18_0.png)
+
+
+Plot a square root  transform of the original time series (`ts`). 
+
+
+```python
+# Plot a square root transform
+
+```
+
+
+```python
+# __SOLUTION__ 
+# Plot a square root transform
+ts_sqrt = np.sqrt(ts)
 fig = plt.figure(figsize=(12,6))
 plt.plot(ts_sqrt, color='blue');
 ```
 
 
-![png](index_files/index_12_0.png)
+![png](index_files/index_21_0.png)
 
 
-
-![png](index_files/index_12_1.png)
-
-
-
-![png](index_files/index_12_2.png)
-
-
-moving forward, let's keep working with the log transformed data before subtracting rolling mean, differencing, etc.
+Going forward, let's keep working with the log transformed data before subtracting rolling mean, differencing, etc.
 
 ## Subtracting the rolling mean
 
@@ -171,37 +287,46 @@ Create a rolling mean using your log transformed time series, with a time window
 
 ```python
 # your code here
+roll_mean = None
+fig = plt.figure(figsize=(11,7)) 
+
 ```
 
 
 ```python
 # __SOLUTION__ 
-rolmean = np.log(ts).rolling(window = 7).mean()
+roll_mean = np.log(ts).rolling(window=7).mean()
 fig = plt.figure(figsize=(11,7))
-orig = plt.plot(np.log(ts), color='blue',label='Original')
-mean = plt.plot(rolmean, color='red', label='Rolling Mean')
+plt.plot(np.log(ts), color='blue', label='Original')
+plt.plot(roll_mean, color='red', label='Rolling Mean')
 plt.legend(loc='best')
-plt.title('Rolling Mean & Standard Deviation')
+plt.title('Log Transformed Data')
 plt.show(block=False)
 ```
 
 
-![png](index_files/index_17_0.png)
+![png](index_files/index_26_0.png)
 
 
-Now, subtract the rolling mean from the time series, look at the 10 first elements of the result and plot the result.
+Now, subtract this rolling mean from the log transformed time series, and look at the 10 first elements of the result.  
 
 
 ```python
-# Subtract the moving average from the original data and check head for Nans
+# Subtract the moving average from the log transformed data
+data_minus_roll_mean = None
+
+# Print the first 10 rows
+
 ```
 
 
 ```python
 # __SOLUTION__ 
-# Subtract the moving average from the original data and check head for Nans
-data_minus_rolmean = np.log(ts) - rolmean
-data_minus_rolmean.head(10)
+# Subtract the moving average from the log transformed data
+data_minus_roll_mean = np.log(ts) - roll_mean
+
+# Print the first 10 rows
+data_minus_roll_mean.head(10)
 ```
 
 
@@ -279,18 +404,22 @@ data_minus_rolmean.head(10)
 
 
 
+Drop the missing values from this time series. 
+
 
 ```python
-# Drop the NaN values from timeseries calculated above
+# Drop the missing values
 
 ```
 
 
 ```python
 # __SOLUTION__ 
-# Drop the NaN values from timeseries calculated above
-data_minus_rolmean.dropna(inplace=True)
+# Drop the missing values
+data_minus_roll_mean.dropna(inplace=True)
 ```
+
+Plot this time series now. 
 
 
 ```python
@@ -302,17 +431,16 @@ data_minus_rolmean.dropna(inplace=True)
 ```python
 # __SOLUTION__ 
 fig = plt.figure(figsize=(11,7))
-plt.plot(data_minus_rolmean, color='blue',label='Passengers - rolling mean')
+plt.plot(data_minus_roll_mean, color='blue',label='Passengers - rolling mean')
 plt.legend(loc='best')
-plt.title('Passengers while the rolling mean is subtracted')
 plt.show(block=False)
 ```
 
 
-![png](index_files/index_24_0.png)
+![png](index_files/index_35_0.png)
 
 
-Finally, use your function `check_stationarity` to see if this series is considered stationary!
+Finally, use your function `check_stationarity()` to see if this series is stationary!
 
 
 ```python
@@ -322,14 +450,15 @@ Finally, use your function `check_stationarity` to see if this series is conside
 
 ```python
 # __SOLUTION__ 
-stationarity_check(data_minus_rolmean)
+stationarity_check(data_minus_roll_mean)
 ```
 
 
-![png](index_files/index_27_0.png)
+![png](index_files/index_38_0.png)
 
 
-    Results of Dickey-Fuller Test:
+    Results of Dickey-Fuller Test: 
+    
     Test Statistic                  -2.348027
     p-value                          0.156946
     #Lags Used                      14.000000
@@ -357,13 +486,21 @@ The time series are not stationary, as the p-value is still substantial
 """
 ```
 
+
+
+
+    '\nThe time series are not stationary, as the p-value is still substantial \n(0.15 instead of smaller than the typical threshold value 0.05).\n'
+
+
+
 ## Subtracting the weighted rolling mean
 
-Repeat all the above for the *weighter* rolling mean. Start from the log-transformed data again. Compare the Dickey-Fuller Test results. What do you conclude?
+Repeat all the above steps to calculate the exponential *weighted* rolling mean with a halflife of 4. Start from the log-transformed data again. Compare the Dickey-Fuller test results. What do you conclude?
 
 
 ```python
-# Use Pandas ewma() to calculate Weighted Moving Average of ts_log
+# Calculate Weighted Moving Average of log transformed data
+exp_roll_mean = None
 
 # Plot the original data with exp weighted average
 
@@ -372,61 +509,69 @@ Repeat all the above for the *weighter* rolling mean. Start from the log-transfo
 
 ```python
 # __SOLUTION__ 
-# Use Pandas ewma() to calculate Weighted Moving Average of ts_log
-exp_rolmean = np.log(ts).ewm(halflife = 4).mean()
+# Calculate Weighted Moving Average of log transformed data
+exp_roll_mean = np.log(ts).ewm(halflife=4).mean()
 
 # Plot the original data with exp weighted average
 fig = plt.figure(figsize=(12,7))
-orig = plt.plot(np.log(ts), color='blue',label='Original')
-mean = plt.plot(exp_rolmean, color='red', label='Exponentially Weighted Rolling Mean')
+plt.plot(np.log(ts), color='blue',label='Original (Log Transformed)')
+plt.plot(exp_roll_mean, color='red', label='Exponentially Weighted Rolling Mean')
 plt.legend(loc='best')
-plt.title('Exponentially Weighted Rolling Mean & Standard Deviation')
 plt.show(block=False)
 ```
 
 
-![png](index_files/index_34_0.png)
+![png](index_files/index_45_0.png)
 
+
+- Subtract this exponential weighted rolling mean from the log transformed data  
+- Print the resulting time series 
 
 
 ```python
-# Subtract the moving average from the original data and plot
+# Subtract the exponential weighted rolling mean from the original data 
+data_minus_exp_roll_mean = None
+
+# Plot the time series
+
 ```
 
 
 ```python
 # __SOLUTION__ 
 # Subtract the moving average from the original data and check head for Nans
-data_minus_exp_rolmean = np.log(ts) - exp_rolmean
-data_minus_exp_rolmean.head(15)
+data_minus_exp_roll_mean = np.log(ts) - exp_roll_mean
 
+# Plot the time series
 fig = plt.figure(figsize=(11,7))
-plt.plot(data_minus_exp_rolmean, color='blue',label='Passengers - weighted rolling mean')
+plt.plot(data_minus_exp_roll_mean, color='blue',label='Passengers - weighted rolling mean')
 plt.legend(loc='best')
-plt.title('Passengers while the weighted rolling mean is subtracted')
 plt.show(block=False)
 ```
 
 
-![png](index_files/index_36_0.png)
+![png](index_files/index_48_0.png)
 
+
+Check for stationarity of `data_minus_exp_roll_mean` using your function. 
 
 
 ```python
-# do a stationarity check
+# Do a stationarity check
 ```
 
 
 ```python
 # __SOLUTION__ 
-stationarity_check(data_minus_exp_rolmean)
+stationarity_check(data_minus_exp_roll_mean)
 ```
 
 
-![png](index_files/index_38_0.png)
+![png](index_files/index_51_0.png)
 
 
-    Results of Dickey-Fuller Test:
+    Results of Dickey-Fuller Test: 
+    
     Test Statistic                  -3.297250
     p-value                          0.015002
     #Lags Used                      13.000000
@@ -454,21 +599,41 @@ Do note that there is still strong seasonality.
 """
 ```
 
+
+
+
+    '\nThe p-value of the Dickey-Fuller test <0.05, so this series seems to be stationary according to this test! \nDo note that there is still strong seasonality.\n'
+
+
+
 ## Differencing
 
 Using exponentially weighted moving averages, we seem to have removed the upward trend, but not the seasonality issue. Now use differencing to remove seasonality. Make sure you use the right amount of `periods`. Start from the log-transformed, exponentially weighted rolling mean-subtracted series.
 
-After you differenced the series, run the `stationarity check` again.
+After you differenced the series, drop the missing values, plot the resulting time series, and then run the `stationarity check()` again.
 
 
 ```python
-# difference your data and look at the head
+# Difference your data
+data_diff = None
+
+# Drop the missing values
+
+
+# Check out the first few rows
+data_diff.head(15)
 ```
 
 
 ```python
 # __SOLUTION__ 
-data_diff = data_minus_exp_rolmean.diff(periods=12)
+# Difference your data
+data_diff = data_minus_exp_roll_mean.diff(periods=12)
+
+# Drop the missing values
+data_diff.dropna(inplace=True)
+
+# Check out the first few rows
 data_diff.head(15)
 ```
 
@@ -502,54 +667,6 @@ data_diff.head(15)
   </thead>
   <tbody>
     <tr>
-      <th>1949-01-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-02-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-03-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-04-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-05-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-06-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-07-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-08-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-09-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-10-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-11-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1949-12-01</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
       <th>1950-01-01</th>
       <td>-0.063907</td>
     </tr>
@@ -561,15 +678,66 @@ data_diff.head(15)
       <th>1950-03-01</th>
       <td>0.029307</td>
     </tr>
+    <tr>
+      <th>1950-04-01</th>
+      <td>0.016168</td>
+    </tr>
+    <tr>
+      <th>1950-05-01</th>
+      <td>0.000194</td>
+    </tr>
+    <tr>
+      <th>1950-06-01</th>
+      <td>0.062669</td>
+    </tr>
+    <tr>
+      <th>1950-07-01</th>
+      <td>0.095524</td>
+    </tr>
+    <tr>
+      <th>1950-08-01</th>
+      <td>0.085827</td>
+    </tr>
+    <tr>
+      <th>1950-09-01</th>
+      <td>0.081834</td>
+    </tr>
+    <tr>
+      <th>1950-10-01</th>
+      <td>0.032363</td>
+    </tr>
+    <tr>
+      <th>1950-11-01</th>
+      <td>0.005065</td>
+    </tr>
+    <tr>
+      <th>1950-12-01</th>
+      <td>0.069320</td>
+    </tr>
+    <tr>
+      <th>1951-01-01</th>
+      <td>0.107890</td>
+    </tr>
+    <tr>
+      <th>1951-02-01</th>
+      <td>0.042702</td>
+    </tr>
+    <tr>
+      <th>1951-03-01</th>
+      <td>0.086617</td>
+    </tr>
   </tbody>
 </table>
 </div>
 
 
 
+Plot the resulting differenced time series. 
+
 
 ```python
-# plot your differenced time series
+# Plot your differenced time series
+
 ```
 
 
@@ -583,23 +751,12 @@ plt.show(block=False)
 ```
 
 
-![png](index_files/index_47_0.png)
+![png](index_files/index_61_0.png)
 
 
 
 ```python
-# drop nas
-```
-
-
-```python
-# __SOLUTION__ 
-data_diff.dropna(inplace=True)
-```
-
-
-```python
-# perform the stationarity check
+# Perform the stationarity check
 ```
 
 
@@ -609,10 +766,11 @@ stationarity_check(data_diff)
 ```
 
 
-![png](index_files/index_51_0.png)
+![png](index_files/index_63_0.png)
 
 
-    Results of Dickey-Fuller Test:
+    Results of Dickey-Fuller Test: 
+    
     Test Statistic                  -3.601666
     p-value                          0.005729
     #Lags Used                      12.000000
@@ -635,11 +793,17 @@ stationarity_check(data_diff)
 # __SOLUTION__
 """
 Even though the rolling mean and rolling average lines do seem to be fluctuating, the movements seem to be completely random, 
-and the same conclusion holds for the original time series. 
-Your time series is now ready for modeling!
+and the same conclusion holds for the original time series. Your time series is now ready for modeling!
 """
 ```
 
+
+
+
+    '\nEven though the rolling mean and rolling average lines do seem to be fluctuating, the movements seem to be completely random, \nand the same conclusion holds for the original time series. \nYour time series is now ready for modeling!\n'
+
+
+
 ## Summary 
 
-In this lab, you learned how to make time series stationary through using log transforms, rolling means and differencing.
+In this lab, you learned how to make time series stationary through using log transforms, rolling means, and differencing.
